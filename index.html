@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>부곡서부교회 주일 예배 스터디 카드 | 깊은 곳에서 드리는 감사</title>
+
+    <!-- 카카오톡 채팅방 링크 미리보기 (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="[부곡서부교회] 깊은 곳에서 드리는 감사 (추수감사절)">
+    <meta property="og:description" content="2027년 11월 15일 주일오전예배 · 시편 130편 말씀 스터디 카드">
+    <!-- 배포 후 아래 주소의 [깃허브아이디]와 [저장소이름]을 본인 주소로 바꿔주세요 -->
+    <meta property="og:image" content="https://[깃허브아이디].github.io/[저장소이름]/thumbnail.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Nanum+Myeongjo:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #15803d;
+            --primary-light: #dcfce7;
+            --primary-dark: #14532d;
+            --bg: #f1f5f9;
+            --app-bg: #f8fafc; 
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } 
+        html, body { background-color: var(--bg); margin: 0; padding: 0; width: 100%; height: 100dvh; display: flex; justify-content: center; align-items: center; font-family: 'Noto Sans KR', sans-serif; overflow: hidden; }
+        
+        /* =========================================================
+           카카오톡 첫 화면 전체 썸네일 커버 (최상단 고정)
+        ========================================================= */
+        #kakao-cover {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100dvh;
+            z-index: 9999;
+            background-color: #0b192c;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
+        #kakao-cover.hidden-cover {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        /* 배경을 꽉 채우는 전체 썸네일 */
+        .cover-bg-full {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: blur(14px) brightness(0.5);
+            transform: scale(1.08);
+            z-index: 1;
+        }
+        .cover-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(8,18,34,0.75) 0%, rgba(8,18,34,0.1) 35%, rgba(8,18,34,0.1) 65%, rgba(8,18,34,0.9) 100%);
+            z-index: 2;
+        }
+        .cover-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2.5rem 0 2.2rem 0;
+        }
+        /* 가로 100% 꽉 차게 들어가는 선명한 썸네일 */
+        .cover-main-img-wrap {
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+        }
+        .cover-main-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* =========================================================
+           스터디 카드 앱 컨테이너
+        ========================================================= */
+        .app-container { width: 100vw; height: 100dvh; background-color: var(--app-bg); display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; }
+        .app-container::-webkit-scrollbar { display: none; }
+        @media (min-width: 768px) { 
+            .app-container { width: 450px; height: 90vh; border-radius: 2.5rem; border: 10px solid #1e293b; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3); } 
+        }
+        
+        .slide-section { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; display: flex; flex-direction: column; position: relative; overflow: hidden; background: white; }
+        .section-content { flex: 1; overflow-y: auto; padding: 3rem 1.5rem 2rem 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+        .section-content::-webkit-scrollbar { display: none; }
+        
+        .nav-footer { flex-shrink: 0; padding: 1.2rem 1.5rem; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(15px); display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid #e2e8f0; z-index: 40; }
+        .btn-nav { padding: 0.9rem 1rem; border-radius: 1.2rem; font-weight: 700; font-size: 0.95rem; flex: 1; text-align: center; cursor: pointer; border: none; transition: 0.3s; }
+        .btn-next { background-color: var(--primary); color: white; }
+        .btn-next:active { background-color: var(--primary-dark); }
+        .btn-prev { background-color: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+        
+        .detail-text { font-size: 1.15rem; line-height: 1.85; color: #334155; word-break: keep-all; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; border-radius: 1rem; overflow: hidden; background: #000; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .video-wrapper iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+        
+        .badge { display: inline-block; padding: 0.3rem 0.85rem; background-color: var(--primary-light); color: var(--primary-dark); font-weight: 700; border-radius: 2rem; font-size: 0.85rem; margin-bottom: 0.75rem; width: fit-content; }
+        .card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #f1f5f9; word-break: keep-all; }
+        
+        .mask-word { background: #e2e8f0; color: #e2e8f0; padding: 2px 6px; border-radius: 6px; cursor: pointer; transition: 0.3s; user-select: none; display: inline-block; }
+        .mask-word.revealed { background: var(--primary-light); color: var(--primary-dark); font-weight: 700; }
+
+        @media print {
+            #kakao-cover { display: none !important; }
+            body, html { background: white !important; overflow: visible !important; height: auto !important; }
+            .app-container { display: block !important; width: 100% !important; height: auto !important; border: none !important; box-shadow: none !important; }
+            .slide-section { page-break-after: always !important; height: auto !important; display: block !important; border-bottom: 1px solid #eee; padding-bottom: 2rem; }
+            .nav-footer, .btn-nav { display: none !important; }
+            .section-content { padding: 1rem 0 !important; overflow: visible !important; }
+            .card { box-shadow: none !important; border: 1px solid #ddd !important; break-inside: avoid; }
+            .mask-word { background: transparent !important; color: #000 !important; border-bottom: 1px solid #000; border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ★ 카카오톡 첫 화면 전체 썸네일 커버 ★ -->
+    <div id="kakao-cover" onclick="enterApp()">
+        <img src="thumbnail.png" alt="" class="cover-bg-full" id="coverBgImg" onerror="tryNextExtension(this)">
+        <div class="cover-gradient"></div>
+        <div class="cover-content">
+            <div class="text-center px-5 pt-2">
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wider text-emerald-100 bg-emerald-900/75 border border-emerald-400/35 backdrop-blur-md">
+                    부곡서부교회 · 추수감사절 스터디 카드
+                </span>
+                <p class="text-white/85 text-sm mt-2.5 font-light">2027년 11월 15일 주일오전예배</p>
+            </div>
+
+            <div class="my-auto w-full">
+                <div class="cover-main-img-wrap">
+                    <img src="thumbnail.png" alt="깊은 곳에서 드리는 감사 썸네일" class="cover-main-img" id="coverMainImg" onerror="tryNextExtension(this)">
+                </div>
+                <p class="text-center text-white/90 text-sm mt-5 leading-relaxed font-light px-6">
+                    "하나님을 믿는 사람에게 바닥은 끝이 아니라,<br>하나님의 은혜를 만나는 자리입니다."
+                </p>
+            </div>
+
+            <div class="px-5">
+                <button type="button"
+                        class="w-full py-4 rounded-2xl font-bold text-base text-white shadow-2xl transition-transform active:scale-95 flex items-center justify-center gap-2"
+                        style="background: linear-gradient(135deg, #15803d 0%, #166534 100%);"
+                        onclick="event.stopPropagation(); enterApp();">
+                    <span>말씀 스터디 시작하기</span>
+                    <span>➔</span>
+                </button>
+                <p class="text-center text-white/55 text-xs mt-3">화면을 터치하면 말씀 카드가 열립니다</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ★ 메인 스터디 카드 앱 ★ -->
+    <div class="app-container" id="app">
+
+        <!-- 1. 예배 정보 및 설교 영상 -->
+        <div class="slide-section" id="sec1">
+            <div class="section-content">
+                <div>
+                    <span class="badge">부곡서부교회 · 2027년 11월 15일 주일오전예배</span>
+                    <h1 class="text-3xl font-bold text-gray-800 leading-tight mb-2" style="font-family: 'Nanum Myeongjo', serif;">깊은 곳에서 드리는 감사 (추수감사절)</h1>
+                    <p class="text-gray-500 font-medium">본문: 시편 130편 1~8절</p>
+                </div>
+                <div class="video-wrapper mt-2">
+                    <iframe 
+                        src="https://www.youtube.com/embed/KDEt6VSYMVs" 
+                        title="부곡서부교회 주일오전예배 설교 영상"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="card mt-2 bg-[var(--primary-light)] border-none">
+                    <p class="text-[var(--primary-dark)] font-bold text-center leading-relaxed">
+                        "곳간이 가득 찰 때뿐 아니라 텅 비어 있는 깊은 곳에서도, 용서와 소망과 속량의 은혜를 붙들 때 진정한 감사가 시작됩니다."
+                    </p>
+                </div>
+            </div>
+            <div class="nav-footer">
+                <button class="btn-nav btn-prev" onclick="showCover()">표지</button>
+                <button class="btn-nav btn-next" onclick="scrollToSec('sec2')">설교 강해 보기 ➔</button>
+            </div>
+        </div>
+
+        <!-- 2. 설교 강해 (3대지) -->
+        <div class="slide-section" id="sec2">
+            <div class="section-content">
+                <span class="badge">Sermon Outline</span>
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-[var(--primary)] pb-2 inline-block mb-2">설교 강해</h2>
+                
+                <div class="space-y-4">
+                    <div class="card">
+                        <h3 class="font-bold text-lg text-gray-800 mb-1">서론: 텅 빈 곳간, 깊은 곳에서 드리는 감사</h3>
+                        <p class="text-gray-600 leading-relaxed">손에 쥔 열매가 풍성할 때 감사하는 것은 쉽습니다. 그러나 실패와 상실, 죄책감으로 숨조차 쉬기 어려운 바다의 가장 깊은 나락에서도 주님을 향해 손을 뻗어 감사할 수 있다면 그것이 참된 신앙이자 진정한 감사입니다.</p>
+                    </div>
+                    <div class="card border-l-4 border-[var(--primary)]">
+                        <h3 class="font-bold text-lg text-[var(--primary-dark)] mb-1">Point 1. 용서하신 은혜를 감사하십시오</h3>
+                        <p class="text-gray-600 leading-relaxed">고난 앞에서 사람들은 하나님을 원망하거나 자기 정죄에 빠지지만, 성경은 주께 있는 초자연적이고 무조건적인 용서(사유하심)를 선포합니다. 일만 달란트 탕감받은 자와 노예선 선장 존 뉴턴의 고백처럼, 감사의 뿌리는 거둔 양이 아니라 탕감받은 은혜의 크기에서 나옵니다.</p>
+                    </div>
+                    <div class="card border-l-4 border-[var(--primary)]">
+                        <h3 class="font-bold text-lg text-[var(--primary-dark)] mb-1">Point 2. 소망을 주신 은혜를 감사하십시오</h3>
+                        <p class="text-gray-600 leading-relaxed">용서받은 뒤에도 질병과 재정, 자녀의 문제는 당장 사라지지 않을 수 있습니다. 그러나 아기를 기다리는 어머니, 비바람 속에도 수확을 바라는 농부, 동트기 직전 가장 어두운 밤을 지키는 파수꾼처럼 성도는 하나님의 시간표에 오차가 없음을 믿고 소망 중에 기다리며 감사할 수 있습니다.</p>
+                    </div>
+                    <div class="card border-l-4 border-[var(--primary)]">
+                        <h3 class="font-bold text-lg text-[var(--primary-dark)] mb-1">Point 3. 속량의 은혜를 감사하십시오</h3>
+                        <p class="text-gray-600 leading-relaxed">속량은 스스로 풀려날 능력 없는 노예의 몸값을 대신 치르고 자유를 주는 은혜입니다. 예수님께서 십자가에서 자기 목숨으로 죄값을 다 치르셨습니다("다 이루었다"). 깡패에서 복음 전도자로 변화된 김익두 목사처럼, 건져진 우리는 여전히 깊은 곳에서 신음하는 이웃에게 그 은혜를 흘려보내야 합니다.</p>
+                    </div>
+                    <div class="card bg-emerald-50/70">
+                        <h3 class="font-bold text-lg text-gray-800 mb-1">결론: 바닥은 은혜를 만나는 자리</h3>
+                        <p class="text-gray-600 leading-relaxed">지금 서 있는 자리가 아무리 깊어도 두려워하지 마십시오. 하나님을 믿는 사람에게 바닥은 끝이 아니라 은혜를 만나는 자리입니다. 용서와 소망과 속량의 은혜에 감사하며, 받은 은혜를 이웃과 나누는 추수감사절이 되기를 바랍니다.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-footer">
+                <button class="btn-nav btn-prev" onclick="scrollToSec('sec1')">이전</button>
+                <button class="btn-nav btn-next" onclick="scrollToSec('sec3')">성서 주해 ➔</button>
+            </div>
+        </div>
+
+        <!-- 3. 심층 성서 주해 -->
+        <div class="slide-section" id="sec3">
+            <div class="section-content">
+                <span class="badge">Deep Exegesis</span>
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-[var(--primary)] pb-2 inline-block mb-2">본문 깊이 읽기</h2>
+                <div class="card">
+                    <p class="detail-text">
+                        시편 130편은 예루살렘 성전을 향해 올라가며 부르던 '성전에 올라가는 노래(시 120~134편)' 중 하나이자, 초대교회 이래 일곱 편의 참회시 가운데 가장 깊은 복음적 통찰을 담고 있는 시편입니다. 
+                        본문 1절의 '깊은 곳(마아마킴)'은 구약성경에서 주로 인간이 통제할 수 없는 거친 바다의 심연이나 죽음의 위협을 상징하며, 시인이 처한 영적·실존적 절망의 깊이를 생생하게 드러냅니다. 
+                        주목할 점은 시인이 자신의 억울함이나 의로움을 호소하는 대신, 3~4절에서 하나님의 공의 앞에 설 수 없는 인간의 절대적 죄성을 인정하고 오직 하나님께만 속한 용서('셀리하')를 구한다는 사실입니다. 
+                        특히 4절은 용서의 궁극적 목적이 방종이나 단순한 죄책감 해소가 아니라 '주를 경외함', 즉 하나님과의 인격적 관계 회복과 참된 예배에 있음을 명확히 밝힙니다. 
+                        이어지는 5~6절에서 시인은 '기다리다'라는 동사를 반복하고 '파수꾼이 아침을 기다림'이라는 강렬한 은유를 사용하여, 아직 눈에 보이는 해결이 없더라도 하나님의 약속의 말씀을 붙드는 신앙의 능동적 기다림을 노래합니다. 
+                        마침내 7~8절에 이르러 개인의 탄식과 기다림은 '이스라엘' 공동체 전체를 향한 선포로 확장되며, 3절에서 누구도 설 수 없었던 죄악의 문제가 8절의 '풍성한 속량'을 통해 완전히 해결되는 신학적 수미상관을 이루고 있습니다.
+                    </p>
+                </div>
+            </div>
+            <div class="nav-footer">
+                <button class="btn-nav btn-prev" onclick="scrollToSec('sec2')">이전</button>
+                <button class="btn-nav btn-next" onclick="scrollToSec('sec4')">원어 탐구 ➔</button>
+            </div>
+        </div>
+
+        <!-- 4. 성서 원어 탐구 -->
+        <div class="slide-section" id="sec4">
+            <div class="section-content">
+                <span class="badge">Lexicon</span>
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-[var(--primary)] pb-2 inline-block mb-2">성서 원어 탐구</h2>
+                <div class="space-y-4">
+                    <div class="card">
+                        <div class="text-[var(--primary)] font-bold text-lg">סְלִיחָה (셀리하 - 사유하심, 용서)</div>
+                        <p class="text-gray-600 mt-2 leading-relaxed">구약에서 인간 사이의 용서가 아니라 오직 하나님께서 죄인에게 베푸시는 초자연적이고 무조건적인 용서에만 사용되는 단어입니다. 죄악을 감찰하시면 아무도 설 수 없지만, 이 '셀리하'의 은혜가 우리를 다시 예배의 자리로 세웁니다.</p>
+                    </div>
+                    <div class="card">
+                        <div class="text-[var(--primary)] font-bold text-lg">קָוָה / יָחַל (카바 / 야할 - 소망하며 기다림)</div>
+                        <p class="text-gray-600 mt-2 leading-relaxed">'카바'는 밧줄을 팽팽하게 꼬아 당기듯 간절한 긴장감으로 기다리는 것을, '야할'은 어둠 속에서도 흔들리지 않고 소망을 품고 인내하는 것을 뜻합니다. 5절에서 두 단어를 겹쳐 사용한 것은 파수꾼이 새벽을 기다리듯 확신에 찬 기다림을 강조합니다.</p>
+                    </div>
+                    <div class="card">
+                        <div class="text-[var(--primary)] font-bold text-lg">פְּדוּת (페두트 - 속량, 대속적 구원)</div>
+                        <p class="text-gray-600 mt-2 leading-relaxed">노예나 포로에게 정당한 몸값을 지불하고 완전히 자유롭게 건져내는 행위를 의미합니다. 신약에서 예수님께서 십자가에서 선포하신 "다 이루었다(테텔레스타이)"와 연결되어, 우리의 죄값을 남김없이 치르신 풍성한 구원을 보여줍니다.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-footer">
+                <button class="btn-nav btn-prev" onclick="scrollToSec('sec3')">이전</button>
+                <button class="btn-nav btn-next" onclick="scrollToSec('sec5')">QT 묵상 ➔</button>
+            </div>
+        </div>
+
+        <!-- 5. 말씀 묵상 (4 Step QT) -->
+        <div class="slide-section" id="sec5">
+            <div class="section-content">
+                <span class="badge">Quiet Time</span>
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-[var(--primary)] pb-2 inline-block mb-2">말씀 묵상 (4 Step)</h2>
+                <div class="space-y-4">
+                    <div class="card">
+                        <h3 class="font-bold text-[var(--primary)] mb-2">👀 관찰</h3>
+                        <p class="text-gray-800 font-medium leading-relaxed">시편 130편의 시인은 지금 어떤 위치(1절)에서 하나님께 부르짖고 있으며, 하나님께서 죄악을 감찰하지 않으시고 사유해 주시는 목적(4절)은 무엇이라고 고백합니까?</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="font-bold text-[var(--primary)] mb-2">💡 해석</h3>
+                        <p class="text-gray-800 font-medium leading-relaxed">왜 성도의 감사는 '곳간에 거둔 열매의 양'이 아니라 '탕감받은 은혜의 크기'와 '새벽이 반드시 온다는 소망'에 뿌리를 두어야 할까요?</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="font-bold text-[var(--primary)] mb-2">❤️ 적용</h3>
+                        <p class="text-gray-800 font-medium leading-relaxed">올 한 해 나를 가장 짓눌렀던 '깊은 곳'(실패, 질병, 재정, 관계, 죄책감 등)은 무엇입니까? 그 자리에서 나는 하나님을 원망하거나 스스로를 정죄하고 있지는 않았나요?</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="font-bold text-[var(--primary)] mb-2">🔥 결단</h3>
+                        <p class="text-gray-800 font-medium leading-relaxed">이미 속량의 은혜로 건짐받은 사람으로서, 아직 어둠과 깊은 곳에서 신음하고 있는 내 주변(가정, 친구, 일터)의 한 사람에게 이번 주 어떻게 손을 내밀고 은혜를 나누겠습니까?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-footer">
+                <button class="btn-nav btn-prev" onclick="scrollToSec('sec4')">이전</button>
+                <button class="btn-nav btn-next" onclick="scrollToSec('sec6')">5단계 실천 ➔</button>
+            </div>
+        </div>
+
+        <!-- 6. 삶의 변화를 위한 5단계 실천 -->
+        <div class="slide-section" id="sec6">
+            <div class="section-content">
+                <span class="badge">Action Plan</span>
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-[var(--primary)] pb-2 inline-block mb-2">삶의 변화를 위한 5단계</h2>
+                <div class="space-y-3">
+                    <div class="card flex gap-3 items-start">
+                        <div class="bg-[var(--primary-light)] text-[var(--primary-dark)] px-3 py-1 rounded-lg font-bold shrink-0">1</div>
+                        <p class="text-gray-700 pt-0.5 leading-relaxed"><strong>은혜의 자리로 나아가기:</strong> 나를 옭아매는 죄책감이나 원망의 마음을 십자가 앞에 솔직히 내려놓고, '셀리하(용서)'의 은혜를 감사하며 기도하기</p>
+                    </div>
+                    <div class="card flex gap-3 items-start">
+                        <div class="bg-[var(--primary-light)] text-[var(--primary-dark)] px-3 py-1 rounded-lg font-bold shrink-0">2</div>
+                        <p class="text-gray-700 pt-0.5 leading-relaxed"><strong>'그럼에도 불구하고' 감사 쓰기:</strong> 아직 해결되지 않은 기도 제목 1가지를 적고, "새벽이 반드시 올 것을 믿기에 감사합니다"라고 선포하기</p>
+                    </div>
+                    <div class="card flex gap-3 items-start">
+                        <div class="bg-[var(--primary-light)] text-[var(--primary-dark)] px-3 py-1 rounded-lg font-bold shrink-0">3</div>
+                        <p class="text-gray-700 pt-0.5 leading-relaxed"><strong>파수꾼의 말씀 묵상:</strong> 매일 아침 흔들리는 감정이나 뉴스 대신 시편 130편을 소리 내어 1번 읽으며 하루를 시작하기</p>
+                    </div>
+                    <div class="card flex gap-3 items-start">
+                        <div class="bg-[var(--primary-light)] text-[var(--primary-dark)] px-3 py-1 rounded-lg font-bold shrink-0">4</div>
+                        <p class="text-gray-700 pt-0.5 leading-relaxed"><strong>찬송으로 고백하기:</strong> 존 뉴턴의 찬송가 '나 같은 죄인 살리신'(305장)을 들으며 나를 건지신 십자가의 속량을 묵상하기</p>
+                    </div>
+                    <div class="card flex gap-3 items-start">
+                        <div class="bg-[var(--primary-light)] text-[var(--primary-dark)] px-3 py-1 rounded-lg font-bold shrink-0">5</div>
+                        <p class="text-gray-700 pt-0.5 leading-relaxed"><strong>속량의 은혜 흘려보내기:</strong> 주변에서 힘들어하는 가족, 동료, 이웃 한 명을 정해 따뜻한 안부 연락을 건네고 중보기도하기</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-footer">
+                <button class="btn-nav btn-prev" onclick="scrollToSec('sec5')">이전</button>
+                <button class="btn-nav btn-next" onclick="scrollToSec('sec7')">말씀 암송 ➔</button>
+            </div>
+        </div>
+
+        <!-- 7. 이번 주 암송 구절 -->
+        <div class="slide-section" id="sec7">
+            <div class="section-content flex flex-col justify-center text-center">
+                <span class="badge mx-auto">Memory Verse</span>
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">이번 주 암송 구절</h2>
+                <div class="card py-8 px-6 border-2 border-[var(--primary-light)]">
+                    <p class="text-xl leading-loose font-medium text-gray-800">
+                        "이스라엘아 여호와를 바랄지어다<br>
+                        여호와께서는 <span class="mask-word" role="button" tabindex="0">인자하심</span>과<br>
+                        풍성한 <span class="mask-word" role="button" tabindex="0">속량</span>이 있음이라<br>
+                        그가 이스라엘을 그의 모든 <span class="mask-word" role="button" tabindex="0">죄악</span>에서 속량하시리로다"
+                    </p>
+                    <p class="mt-8 font-bold text-[var(--primary-dark)] text-lg">(시편 130편 7~8절)</p>
+                </div>
+                <p class="text-gray-500 mt-6 text-sm">가려진 회색 박스를 터치하면 말씀이 나타납니다.</p>
+            </div>
+            <div class="nav-footer">
+                <button class="btn-nav btn-prev" onclick="scrollToSec('sec6')">이전</button>
+                <button class="btn-nav bg-gray-800 text-white" onclick="showCover()">처음으로 ↺</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function enterApp() {
+            document.getElementById('kakao-cover').classList.add('hidden-cover');
+            document.getElementById('sec1').scrollIntoView({ behavior: 'instant' });
+        }
+
+        function showCover() {
+            document.getElementById('kakao-cover').classList.remove('hidden-cover');
+        }
+
+        function scrollToSec(id)
